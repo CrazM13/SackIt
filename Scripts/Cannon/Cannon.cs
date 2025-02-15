@@ -15,10 +15,11 @@ public partial class Cannon : CharacterBody2D {
 	[Export] private float maxForce = 1;
 	[Export] private float powerChangeSpeed = 1;
 	[ExportSubgroup("Prediction")]
+	[Export] private PhysicsMaterial predictionPhysics;
 	[Export] private int predictionInterval = 10;
 	[Export] private int predictionSteps = 10;
 
-	private float currentPower = -1;
+	private float currentPower = 0;
 	private int powerChangeDir = 1;
 	private bool wasMouseButtonPressed;
 
@@ -37,11 +38,7 @@ public partial class Cannon : CharacterBody2D {
 
 		bool isMouseButtonPressed = Input.IsMouseButtonPressed(MouseButton.Left);
 		if (!isMouseButtonPressed && wasMouseButtonPressed) {
-			// TODO Fire
-
-			GameManager.Instance.StatShotsFired++;
-			currentPower = -1;
-			prediction.Visible = false;
+			Fire();
 		} else if (isMouseButtonPressed) {
 			UpdatePowerBar((float) delta);
 			ShowPrediction((float) delta);
@@ -83,6 +80,7 @@ public partial class Cannon : CharacterBody2D {
 
 			for (int _ = 0; _ < predictionInterval; _++) {
 				velocity += GetGravity() * delta;
+				velocity *= 1 - (predictionPhysics.Drag * delta);
 				point += velocity * delta;
 			}
 
@@ -90,6 +88,25 @@ public partial class Cannon : CharacterBody2D {
 		}
 
 		prediction.Points = newPoints;
+	}
+
+	private void Fire() {
+		prediction.Visible = false;
+		GameManager.Instance.StatShotsFired++;
+
+		Node node = cannonballPrefab.Instantiate();
+
+		if (node is PhysicsObject physicsObject) {
+			Vector2 aimingDir = Vector2.Right.Rotated(rotatingNode.Rotation);
+			Vector2 velocity = aimingDir * currentPower;
+
+			physicsObject.Push(velocity);
+			physicsObject.GlobalPosition = nozzel.GlobalPosition;
+		}
+
+		GetTree().CurrentScene.AddChild(node);
+
+		currentPower = 0;
 	}
 
 }

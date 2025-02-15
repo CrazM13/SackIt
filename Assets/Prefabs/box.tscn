@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://dno37utfakhdv"]
+
+[ext_resource type="Script" path="res://Scripts/Physics/PhysicsObject.cs" id="1_sy51p"]
+[ext_resource type="Resource" uid="uid://cfloricjd5x67" path="res://Assets/PhysicsMaterial/box.tres" id="2_ejloi"]
+[ext_resource type="Texture2D" uid="uid://o4twix54pwbm" path="res://Assets/Square.png" id="3_1hv7v"]
+[ext_resource type="Texture2D" uid="uid://bh3whh717xcpu" path="res://Assets/Circle.png" id="4_e7i8k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ff435"]
+size = Vector2(32, 32)
+
+[node name="Box" type="CharacterBody2D" node_paths=PackedStringArray("decayGuage")]
+script = ExtResource("1_sy51p")
+physicsMaterial = ExtResource("2_ejloi")
+decayGuage = NodePath("TextureProgressBar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ff435")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_1hv7v")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.0
+value = 1.0
+fill_mode = 4
+texture_progress = ExtResource("4_e7i8k")
+tint_progress = Color(0.231373, 0.231373, 0.231373, 0.501961)

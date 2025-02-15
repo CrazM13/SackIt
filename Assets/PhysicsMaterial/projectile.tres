@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PhysicsMaterial" load_steps=2 format=3 uid="uid://cq4dgqhrtul8f"]
+
+[ext_resource type="Script" path="res://Scripts/Physics/PhysicsMaterial.cs" id="1_15vu7"]
+
+[resource]
+script = ExtResource("1_15vu7")
+Drag = 0.2
+Bounciness = 0.9
