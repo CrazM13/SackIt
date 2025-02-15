@@ -38,9 +38,13 @@ public partial class PhysicsObject : CharacterBody2D {
 			if (decayOnActivate && lifetime > decayDelay) {
 				QueueFree();
 			}
-		} else if (shouldTestAlive) {
+		}
+		
+		if (shouldTestAlive) {
 			if (startPosition.DistanceSquaredTo(this.GlobalPosition) > 32*32) {
-				alive = true;
+				if (!alive) alive = true;
+				lifetime = 0;
+				startPosition = this.GlobalPosition;
 				if (decayGuage != null) decayGuage.Visible = true;
 				shouldTestAlive = false;
 			}
@@ -64,11 +68,13 @@ public partial class PhysicsObject : CharacterBody2D {
 			KinematicCollision2D collision = GetSlideCollision(i);
 
 			if (collision != null) {
-				if (collision.GetCollider() is PhysicsObject physicsObject) {
-					physicsObject.Push(oldVelocity * friction);
-				}
-				
 				this.Velocity = (oldVelocity.Bounce(collision.GetNormal()) * physicsMaterial.Bounciness) + (oldVelocity * (1 - physicsMaterial.Bounciness));
+				
+
+				if (collision.GetCollider() is PhysicsObject physicsObject) {
+					physicsObject.Push((oldVelocity - this.Velocity) * friction);
+				}
+
 				this.Velocity *= friction;
 			}
 		}
@@ -77,10 +83,7 @@ public partial class PhysicsObject : CharacterBody2D {
 	public void Push(Vector2 velocity) {
 		this.Velocity += velocity;
 
-		if (!alive) shouldTestAlive = true;
-		else {
-			lifetime = 0;
-		}
+		shouldTestAlive = true;
 	}
 
 }
