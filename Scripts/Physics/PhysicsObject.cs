@@ -67,16 +67,14 @@ public partial class PhysicsObject : CharacterBody2D {
 		for (int i = 0; i < GetSlideCollisionCount(); i++) {
 			KinematicCollision2D collision = GetSlideCollision(i);
 
-			if (collision != null) {
-				this.Velocity = (oldVelocity.Bounce(collision.GetNormal()) * physicsMaterial.Bounciness) + (oldVelocity * (1 - physicsMaterial.Bounciness));
+			this.Velocity = (oldVelocity.Bounce(collision.GetNormal()) * physicsMaterial.Bounciness) + (oldVelocity * (1 - physicsMaterial.Bounciness));
 				
 
-				if (collision.GetCollider() is PhysicsObject physicsObject) {
-					physicsObject.Push((oldVelocity - this.Velocity) * friction);
-				}
-
-				this.Velocity *= friction;
+			if (collision.GetCollider() is PhysicsObject physicsObject) {
+				physicsObject.Push((oldVelocity - this.Velocity) * friction);
 			}
+
+			this.Velocity *= friction;
 		}
 	}
 

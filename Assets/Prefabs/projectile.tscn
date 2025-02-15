@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Physics/PhysicsObject.cs" id="1_55ooy"]
 [ext_resource type="Resource" uid="uid://cq4dgqhrtul8f" path="res://Assets/PhysicsMaterial/projectile.tres" id="2_7f0t3"]
-[ext_resource type="Texture2D" uid="uid://bh3whh717xcpu" path="res://Assets/Circle.png" id="3_qkcxk"]
+[ext_resource type="Texture2D" uid="uid://bp82bqhweubbr" path="res://Assets/Cannonball.png" id="3_ccpa1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f4cw1"]
 radius = 16.0312
@@ -16,4 +16,4 @@ physicsMaterial = ExtResource("2_7f0t3")
 shape = SubResource("CircleShape2D_f4cw1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("3_qkcxk")
+texture = ExtResource("3_ccpa1")

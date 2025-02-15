@@ -1,11 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://djuqed8gpbc4e"]
+[gd_scene load_steps=15 format=3 uid="uid://djuqed8gpbc4e"]
 
 [ext_resource type="Texture2D" uid="uid://o4twix54pwbm" path="res://Assets/Square.png" id="1_o7qjg"]
 [ext_resource type="Script" path="res://Scripts/Cannon/Cannon.cs" id="2_86f34"]
 [ext_resource type="PackedScene" uid="uid://1g24rhw7gio0" path="res://Assets/Prefabs/projectile.tscn" id="2_kmcop"]
-[ext_resource type="Texture2D" uid="uid://bh3whh717xcpu" path="res://Assets/Circle.png" id="3_4ywcq"]
 [ext_resource type="Resource" uid="uid://cq4dgqhrtul8f" path="res://Assets/PhysicsMaterial/projectile.tres" id="3_8u66e"]
+[ext_resource type="Texture2D" uid="uid://de0y6nipc1sdn" path="res://Assets/Cannon/Cannon_Frame.png" id="4_af2og"]
+[ext_resource type="Texture2D" uid="uid://dyfjahi2lotw3" path="res://Assets/Cannon/Cannon_Cannon.png" id="5_ouhb5"]
 [ext_resource type="PackedScene" uid="uid://dno37utfakhdv" path="res://Assets/Prefabs/box.tscn" id="6_wbft7"]
+[ext_resource type="Texture2D" uid="uid://crbkktiqypvxi" path="res://Assets/Cannon/Cannon_Wheel.png" id="7_q0yuy"]
+[ext_resource type="Texture2D" uid="uid://uvtqs4awl6mv" path="res://Assets/Background.png" id="9_7m8te"]
+[ext_resource type="PackedScene" uid="uid://b6qovgb7mjx74" path="res://Assets/Prefabs/target_box.tscn" id="9_ahukj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hbnry"]
 size = Vector2(32, 31)
@@ -20,14 +24,10 @@ gradient = SubResource("Gradient_d4eup")
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_cy3fq"]
 distance = -650.0
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_iio0d"]
-normal = Vector2(-1, 0)
-distance = -1160.0
-
 [node name="GameScene" type="Node2D"]
 
 [node name="StaticBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("powerBar", "rotatingNode", "nozzel", "prediction")]
-position = Vector2(39, 633)
+position = Vector2(128, 587)
 collision_layer = 0
 script = ExtResource("2_86f34")
 powerBar = NodePath("Cannon/Node2D/ProgressBar")
@@ -47,30 +47,29 @@ position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_hbnry")
 
 [node name="Cannon" type="Sprite2D" parent="StaticBody2D"]
-texture = ExtResource("1_o7qjg")
+texture = ExtResource("4_af2og")
 
 [node name="Node2D" type="Node2D" parent="StaticBody2D/Cannon"]
-position = Vector2(0, -10)
+position = Vector2(-12, -64)
 
 [node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/Cannon/Node2D"]
-position = Vector2(30, -2)
-scale = Vector2(2.56, 1)
-texture = ExtResource("3_4ywcq")
+position = Vector2(8, 56)
+texture = ExtResource("5_ouhb5")
 
 [node name="Nozzel" type="Node2D" parent="StaticBody2D/Cannon/Node2D"]
-position = Vector2(60, 0)
+position = Vector2(193, 3)
 
 [node name="ProgressBar" type="TextureProgressBar" parent="StaticBody2D/Cannon/Node2D"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(200, 0)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 9.99999
-offset_top = -3.0
-offset_right = 210.0
-offset_bottom = 21.0
+offset_left = 11.0
+offset_top = -6.0
+offset_right = 876.0
+offset_bottom = 70.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.2, 0.2)
@@ -84,37 +83,51 @@ tint_under = Color(0.381703, 0.381703, 0.381703, 1)
 [node name="Prediction" type="Line2D" parent="StaticBody2D/Cannon"]
 top_level = true
 
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/Cannon"]
+texture = ExtResource("7_q0yuy")
+
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
 shape = SubResource("WorldBoundaryShape2D_cy3fq")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D2"]
-shape = SubResource("WorldBoundaryShape2D_iio0d")
+[node name="BG" type="CanvasLayer" parent="."]
+layer = -100
 
-[node name="Box" parent="." instance=ExtResource("6_wbft7")]
-position = Vector2(652, 632)
+[node name="TextureRect" type="TextureRect" parent="BG"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_7m8te")
+expand_mode = 3
 
-[node name="Box2" parent="." instance=ExtResource("6_wbft7")]
-position = Vector2(685, 632)
+[node name="Level" type="Node2D" parent="."]
 
-[node name="Box3" parent="." instance=ExtResource("6_wbft7")]
-position = Vector2(685, 599)
+[node name="TargetBox" parent="Level" instance=ExtResource("9_ahukj")]
+position = Vector2(892, 507)
 
-[node name="Box4" parent="." instance=ExtResource("6_wbft7")]
-position = Vector2(652, 598)
+[node name="Box" parent="Level" instance=ExtResource("6_wbft7")]
+position = Vector2(836, 622)
 
-[node name="Box5" parent="." instance=ExtResource("6_wbft7")]
-position = Vector2(652, 564)
+[node name="Box2" parent="Level" instance=ExtResource("6_wbft7")]
+position = Vector2(893, 622)
 
-[node name="Box6" parent="." instance=ExtResource("6_wbft7")]
-position = Vector2(685, 566)
+[node name="Box3" parent="Level" instance=ExtResource("6_wbft7")]
+position = Vector2(893, 564)
 
-[node name="Box7" parent="." instance=ExtResource("6_wbft7")]
-position = Vector2(686, 533)
+[node name="Box4" parent="Level" instance=ExtResource("6_wbft7")]
+position = Vector2(836, 563)
 
-[node name="Box8" parent="." instance=ExtResource("6_wbft7")]
-position = Vector2(652, 531)
+[node name="Box5" parent="Level" instance=ExtResource("6_wbft7")]
+position = Vector2(834, 504)
 
-[node name="Box9" parent="." instance=ExtResource("6_wbft7")]
-position = Vector2(669, 498)
+[node name="Box6" parent="Level" instance=ExtResource("6_wbft7")]
+position = Vector2(833, 446)
+
+[node name="Box7" parent="Level" instance=ExtResource("6_wbft7")]
+position = Vector2(892, 448)
+
+[node name="Box8" parent="Level" instance=ExtResource("6_wbft7")]
+position = Vector2(863, 387)

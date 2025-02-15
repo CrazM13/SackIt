@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6qovgb7mjx74"]
+
+[ext_resource type="PackedScene" uid="uid://dno37utfakhdv" path="res://Assets/Prefabs/box.tscn" id="1_mwptj"]
+[ext_resource type="Texture2D" uid="uid://r0thij0vnwci" path="res://Assets/cube_red.png" id="2_nlcja"]
+
+[node name="TargetBox" instance=ExtResource("1_mwptj")]
+decayOnActivate = false
+
+[node name="Sprite2D" parent="." index="1"]
+texture = ExtResource("2_nlcja")
