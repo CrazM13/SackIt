@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://djuqed8gpbc4e"]
+[gd_scene load_steps=17 format=3 uid="uid://djuqed8gpbc4e"]
 
 [ext_resource type="Texture2D" uid="uid://o4twix54pwbm" path="res://Assets/Square.png" id="1_o7qjg"]
 [ext_resource type="Script" path="res://Scripts/Cannon/Cannon.cs" id="2_86f34"]
@@ -9,7 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://dno37utfakhdv" path="res://Assets/Prefabs/box.tscn" id="6_wbft7"]
 [ext_resource type="Texture2D" uid="uid://crbkktiqypvxi" path="res://Assets/Cannon/Cannon_Wheel.png" id="7_q0yuy"]
 [ext_resource type="Texture2D" uid="uid://uvtqs4awl6mv" path="res://Assets/Background.png" id="9_7m8te"]
-[ext_resource type="PackedScene" uid="uid://b6qovgb7mjx74" path="res://Assets/Prefabs/target_box.tscn" id="9_ahukj"]
+[ext_resource type="PackedScene" path="res://Assets/Prefabs/target_box.tscn" id="9_ahukj"]
+[ext_resource type="PackedScene" uid="uid://bj5q6dvf5b6kc" path="res://Scenes/UI_ShotsFired.tscn" id="11_g87kv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hbnry"]
 size = Vector2(32, 31)
@@ -138,3 +139,6 @@ position = Vector2(892, 448)
 
 [node name="Box8" parent="Level" instance=ExtResource("6_wbft7")]
 position = Vector2(863, 387)
+
+[node name="UI" parent="." instance=ExtResource("11_g87kv")]
+modulate = Color(0.882649, 0, 0.136878, 1)
