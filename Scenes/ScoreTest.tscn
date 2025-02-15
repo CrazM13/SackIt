@@ -1,0 +1,123 @@
+[gd_scene load_steps=13 format=3 uid="uid://bykaspmq54qhl"]
+
+[ext_resource type="Script" path="res://Scripts/Cannon/Cannon.cs" id="1_w2krg"]
+[ext_resource type="PackedScene" uid="uid://1g24rhw7gio0" path="res://Assets/Prefabs/projectile.tscn" id="2_t26d7"]
+[ext_resource type="Resource" uid="uid://cq4dgqhrtul8f" path="res://Assets/PhysicsMaterial/projectile.tres" id="3_oliq4"]
+[ext_resource type="Texture2D" uid="uid://o4twix54pwbm" path="res://Assets/Square.png" id="4_r8dyf"]
+[ext_resource type="Texture2D" uid="uid://bh3whh717xcpu" path="res://Assets/Circle.png" id="5_4gatp"]
+[ext_resource type="PackedScene" uid="uid://dno37utfakhdv" path="res://Assets/Prefabs/box.tscn" id="6_bla6k"]
+[ext_resource type="PackedScene" uid="uid://bj5q6dvf5b6kc" path="res://Scenes/UI_ShotsFired.tscn" id="7_1lw5c"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hbnry"]
+size = Vector2(32, 31)
+
+[sub_resource type="Gradient" id="Gradient_d4eup"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0, 1, 1, 1, 1, 0.466667, 0, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_f08bc"]
+gradient = SubResource("Gradient_d4eup")
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_cy3fq"]
+distance = -650.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_iio0d"]
+normal = Vector2(-1, 0)
+distance = -1160.0
+
+[node name="GameScene" type="Node2D"]
+
+[node name="StaticBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("powerBar", "rotatingNode", "nozzel", "prediction")]
+position = Vector2(39, 633)
+collision_layer = 0
+script = ExtResource("1_w2krg")
+powerBar = NodePath("Cannon/Node2D/ProgressBar")
+rotatingNode = NodePath("Cannon/Node2D")
+nozzel = NodePath("Cannon/Node2D/Nozzel")
+prediction = NodePath("Cannon/Prediction")
+cannonballPrefab = ExtResource("2_t26d7")
+minForce = 500.0
+maxForce = 1500.0
+powerChangeSpeed = 1000.0
+predictionPhysics = ExtResource("3_oliq4")
+predictionInterval = 1
+predictionSteps = 100
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_hbnry")
+
+[node name="Cannon" type="Sprite2D" parent="StaticBody2D"]
+texture = ExtResource("4_r8dyf")
+
+[node name="Node2D" type="Node2D" parent="StaticBody2D/Cannon"]
+position = Vector2(0, -10)
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D/Cannon/Node2D"]
+position = Vector2(30, -2)
+scale = Vector2(2.56, 1)
+texture = ExtResource("5_4gatp")
+
+[node name="Nozzel" type="Node2D" parent="StaticBody2D/Cannon/Node2D"]
+position = Vector2(60, 0)
+
+[node name="ProgressBar" type="TextureProgressBar" parent="StaticBody2D/Cannon/Node2D"]
+custom_minimum_size = Vector2(100, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 9.99999
+offset_top = -3.0
+offset_right = 210.0
+offset_bottom = 21.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+max_value = 1.0
+step = 0.0
+nine_patch_stretch = true
+texture_under = ExtResource("4_r8dyf")
+texture_progress = SubResource("GradientTexture1D_f08bc")
+tint_under = Color(0.381703, 0.381703, 0.381703, 1)
+
+[node name="Prediction" type="Line2D" parent="StaticBody2D/Cannon"]
+top_level = true
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("WorldBoundaryShape2D_cy3fq")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D2"]
+shape = SubResource("WorldBoundaryShape2D_iio0d")
+
+[node name="Box" parent="." instance=ExtResource("6_bla6k")]
+position = Vector2(652, 632)
+
+[node name="Box2" parent="." instance=ExtResource("6_bla6k")]
+position = Vector2(685, 632)
+
+[node name="Box3" parent="." instance=ExtResource("6_bla6k")]
+position = Vector2(685, 599)
+
+[node name="Box4" parent="." instance=ExtResource("6_bla6k")]
+position = Vector2(652, 598)
+
+[node name="Box5" parent="." instance=ExtResource("6_bla6k")]
+position = Vector2(652, 564)
+
+[node name="Box6" parent="." instance=ExtResource("6_bla6k")]
+position = Vector2(685, 566)
+
+[node name="Box7" parent="." instance=ExtResource("6_bla6k")]
+position = Vector2(686, 533)
+
+[node name="Box8" parent="." instance=ExtResource("6_bla6k")]
+position = Vector2(652, 531)
+
+[node name="Box9" parent="." instance=ExtResource("6_bla6k")]
+position = Vector2(669, 498)
+
+[node name="UI" parent="." instance=ExtResource("7_1lw5c")]

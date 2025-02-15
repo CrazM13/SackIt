@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://bj5q6dvf5b6kc"]
+
+[ext_resource type="Script" path="res://Scripts/ShotsFired.cs" id="1_cfn2l"]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ShotsFiredLabel2" type="Label" parent="."]
+layout_mode = 0
+offset_left = 46.0
+offset_top = 43.0
+offset_right = 150.0
+offset_bottom = 66.0
+text = "Shots Fired: 0"
+script = ExtResource("1_cfn2l")
