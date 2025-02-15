@@ -1,12 +1,13 @@
 using Godot;
 using System;
 
-public partial class Cannon : Node2D {
+public partial class Cannon : CharacterBody2D {
 
 	[ExportGroup("References")]
 	[Export] private TextureProgressBar powerBar;
 	[Export] private Node2D rotatingNode;
 	[Export] private Node2D nozzel;
+	[Export] private Line2D prediction;
 	[Export] private PackedScene cannonballPrefab;
 
 	[ExportGroup("Settings")]
@@ -14,6 +15,7 @@ public partial class Cannon : Node2D {
 	[Export] private float maxForce = 1;
 	[Export] private float powerChangeSpeed = 1;
 	[ExportSubgroup("Prediction")]
+	[Export] private int predictionInterval = 10;
 	[Export] private int predictionSteps = 10;
 
 	private float currentPower = -1;
@@ -26,6 +28,8 @@ public partial class Cannon : Node2D {
 		powerBar.MinValue = minForce;
 		powerBar.MaxValue = maxForce;
 
+		prediction.Visible = false;
+
 	}
 
 	public override void _Process(double delta) {
@@ -37,8 +41,10 @@ public partial class Cannon : Node2D {
 
 			GameManager.Instance.StatShotsFired++;
 			currentPower = -1;
+			prediction.Visible = false;
 		} else if (isMouseButtonPressed) {
 			UpdatePowerBar((float) delta);
+			ShowPrediction((float) delta);
 		}
 
 		UpdateAiming();
@@ -64,6 +70,26 @@ public partial class Cannon : Node2D {
 		rotatingNode.LookAt(GetGlobalMousePosition());
 	}
 
+	private void ShowPrediction(float delta) {
+		prediction.Visible = true;
 
+		Vector2[] newPoints = new Vector2[predictionSteps];
+		Vector2 point = nozzel.GlobalPosition;
+		Vector2 aimingDir = Vector2.Right.Rotated(rotatingNode.Rotation);
+		Vector2 velocity = aimingDir * currentPower;
+
+		newPoints[0] = point;
+		for (int i = 1; i < predictionSteps; i++) {
+
+			for (int _ = 0; _ < predictionInterval; _++) {
+				velocity += GetGravity() * delta;
+				point += velocity * delta;
+			}
+
+			newPoints[i] = point;
+		}
+
+		prediction.Points = newPoints;
+	}
 
 }
